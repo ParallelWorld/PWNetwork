@@ -1,5 +1,7 @@
 以下是网络组件功能表：
 
+[ ] 支持请求和响应的拦截或者hook
+
 [ ] 支持batch和chain请求
 
 [ ] 打印请求的header、body、parameters和response等，可根据不同级别来打印，比如error或者info，并且与网络层的代码解耦。

@@ -14,6 +14,11 @@
 		0E57B3D01E30909B00572389 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0E57B3CF1E30909B00572389 /* Assets.xcassets */; };
 		0E57B3D31E30909B00572389 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E57B3D11E30909B00572389 /* LaunchScreen.storyboard */; };
 		0E57B3DE1E30909B00572389 /* PWNetworkDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E57B3DD1E30909B00572389 /* PWNetworkDemoTests.m */; };
+		0E57B4001E30B81600572389 /* PWNRequestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E57B3FF1E30B81600572389 /* PWNRequestTests.m */; };
+		0E57B40E1E30CFAC00572389 /* PWNCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E57B4071E30CFAC00572389 /* PWNCenter.m */; };
+		0E57B4101E30CFAC00572389 /* PWNRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E57B40D1E30CFAC00572389 /* PWNRequest.m */; };
+		0E57B4131E30D1D900572389 /* PWNEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E57B4121E30D1D900572389 /* PWNEngine.m */; };
+		0E57B4161E30D20100572389 /* PWNCenterConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E57B4151E30D20100572389 /* PWNCenterConfig.m */; };
 		5C2657E4E15EE4A36A9EA3F8 /* libPods-PWNetworkDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F3639331274B7767492C41A6 /* libPods-PWNetworkDemo.a */; };
 		D67F4828C8CB657AFFEAB119 /* libPods-PWNetworkDemoTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 18CC2CF979DBF15D96BB77C5 /* libPods-PWNetworkDemoTests.a */; };
 /* End PBXBuildFile section */
@@ -42,6 +47,19 @@
 		0E57B3D91E30909B00572389 /* PWNetworkDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PWNetworkDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E57B3DD1E30909B00572389 /* PWNetworkDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PWNetworkDemoTests.m; sourceTree = "<group>"; };
 		0E57B3DF1E30909B00572389 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0E57B3FF1E30B81600572389 /* PWNRequestTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PWNRequestTests.m; sourceTree = "<group>"; };
+		0E57B4051E30CFAC00572389 /* PWNRequestInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWNRequestInternal.h; sourceTree = "<group>"; };
+		0E57B4061E30CFAC00572389 /* PWNCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWNCenter.h; sourceTree = "<group>"; };
+		0E57B4071E30CFAC00572389 /* PWNCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PWNCenter.m; sourceTree = "<group>"; };
+		0E57B4081E30CFAC00572389 /* PWNDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWNDefines.h; sourceTree = "<group>"; };
+		0E57B40B1E30CFAC00572389 /* PWNetwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWNetwork.h; sourceTree = "<group>"; };
+		0E57B40C1E30CFAC00572389 /* PWNRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWNRequest.h; sourceTree = "<group>"; };
+		0E57B40D1E30CFAC00572389 /* PWNRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PWNRequest.m; sourceTree = "<group>"; };
+		0E57B4111E30D1D900572389 /* PWNEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWNEngine.h; sourceTree = "<group>"; };
+		0E57B4121E30D1D900572389 /* PWNEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PWNEngine.m; sourceTree = "<group>"; };
+		0E57B4141E30D20100572389 /* PWNCenterConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWNCenterConfig.h; sourceTree = "<group>"; };
+		0E57B4151E30D20100572389 /* PWNCenterConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PWNCenterConfig.m; sourceTree = "<group>"; };
+		0E57B4171E30D5D900572389 /* PWNCenterInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWNCenterInternal.h; sourceTree = "<group>"; };
 		18CC2CF979DBF15D96BB77C5 /* libPods-PWNetworkDemoTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PWNetworkDemoTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		54283EFC430CEF3035A44CC5 /* Pods-PWNetworkDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PWNetworkDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-PWNetworkDemo/Pods-PWNetworkDemo.release.xcconfig"; sourceTree = "<group>"; };
 		61D7CFE647A823E3A35AF716 /* Pods-PWNetworkDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PWNetworkDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PWNetworkDemo/Pods-PWNetworkDemo.debug.xcconfig"; sourceTree = "<group>"; };
@@ -73,7 +91,7 @@
 		0E57B3B71E30909B00572389 = {
 			isa = PBXGroup;
 			children = (
-				0E57B3E81E30919900572389 /* PWNetwork */,
+				0E57B4031E30CFAC00572389 /* PWNetwork */,
 				0E57B3C21E30909B00572389 /* PWNetworkDemo */,
 				0E57B3DC1E30909B00572389 /* PWNetworkDemoTests */,
 				0E57B3C11E30909B00572389 /* Products */,
@@ -118,17 +136,38 @@
 		0E57B3DC1E30909B00572389 /* PWNetworkDemoTests */ = {
 			isa = PBXGroup;
 			children = (
-				0E57B3DD1E30909B00572389 /* PWNetworkDemoTests.m */,
 				0E57B3DF1E30909B00572389 /* Info.plist */,
+				0E57B3DD1E30909B00572389 /* PWNetworkDemoTests.m */,
+				0E57B3FF1E30B81600572389 /* PWNRequestTests.m */,
 			);
 			path = PWNetworkDemoTests;
 			sourceTree = "<group>";
 		};
-		0E57B3E81E30919900572389 /* PWNetwork */ = {
+		0E57B4031E30CFAC00572389 /* PWNetwork */ = {
 			isa = PBXGroup;
 			children = (
+				0E57B4041E30CFAC00572389 /* Internal */,
+				0E57B4081E30CFAC00572389 /* PWNDefines.h */,
+				0E57B4061E30CFAC00572389 /* PWNCenter.h */,
+				0E57B4071E30CFAC00572389 /* PWNCenter.m */,
+				0E57B4141E30D20100572389 /* PWNCenterConfig.h */,
+				0E57B4151E30D20100572389 /* PWNCenterConfig.m */,
+				0E57B40B1E30CFAC00572389 /* PWNetwork.h */,
+				0E57B40C1E30CFAC00572389 /* PWNRequest.h */,
+				0E57B40D1E30CFAC00572389 /* PWNRequest.m */,
 			);
 			path = PWNetwork;
+			sourceTree = "<group>";
+		};
+		0E57B4041E30CFAC00572389 /* Internal */ = {
+			isa = PBXGroup;
+			children = (
+				0E57B4111E30D1D900572389 /* PWNEngine.h */,
+				0E57B4121E30D1D900572389 /* PWNEngine.m */,
+				0E57B4051E30CFAC00572389 /* PWNRequestInternal.h */,
+				0E57B4171E30D5D900572389 /* PWNCenterInternal.h */,
+			);
+			path = Internal;
 			sourceTree = "<group>";
 		};
 		126AB886ABF647E59CC078C3 /* Frameworks */ = {
@@ -352,9 +391,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E57B40E1E30CFAC00572389 /* PWNCenter.m in Sources */,
+				0E57B4131E30D1D900572389 /* PWNEngine.m in Sources */,
 				0E57B3CB1E30909B00572389 /* ViewController.m in Sources */,
 				0E57B3C81E30909B00572389 /* AppDelegate.m in Sources */,
 				0E57B3C51E30909B00572389 /* main.m in Sources */,
+				0E57B4161E30D20100572389 /* PWNCenterConfig.m in Sources */,
+				0E57B4101E30CFAC00572389 /* PWNRequest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -363,6 +406,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0E57B3DE1E30909B00572389 /* PWNetworkDemoTests.m in Sources */,
+				0E57B4001E30B81600572389 /* PWNRequestTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
