@@ -25,7 +25,7 @@ typedef void (^PWNCompletionHandler)(id _Nullable responseObject, NSError * _Nul
 - (NSUInteger)sendRequest:(PWNRequest *)request
         completionHandler:(nullable PWNCompletionHandler)completionHandler;
 
-- (void)cancelRequestByIdentifier:(NSUInteger)identifier;
+- (PWNRequest *)cancelRequestByIdentifier:(NSUInteger)identifier;
 
 @end
 

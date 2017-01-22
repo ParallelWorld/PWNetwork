@@ -11,12 +11,8 @@
 #import "AFNetworking.h"
 #import "PWNRequest.h"
 #import "PWNRequestInternal.h"
-
-@interface PWNEngine ()
-
-@property (nonatomic, strong) AFHTTPSessionManager *sessionManager;
-
-@end
+#import "PWNEngineInternal.h"
+#import "NSURLSessionTask+PWNRequest.h"
 
 @implementation PWNEngine
 
@@ -88,6 +84,8 @@
         }
     }];
     
+    dataTask.pwn_request = request;
+    
     request.identifier = dataTask.taskIdentifier;
     
     [dataTask resume];
@@ -95,13 +93,16 @@
     return request.identifier;
 }
 
-- (void)cancelRequestByIdentifier:(NSUInteger)identifier {
-    [self.sessionManager.tasks enumerateObjectsUsingBlock:^(NSURLSessionTask *task, NSUInteger idx, BOOL *stop) {
+- (PWNRequest *)cancelRequestByIdentifier:(NSUInteger)identifier {
+    PWNRequest *request = nil;
+    for (NSURLSessionTask *task in self.sessionManager.tasks) {
         if (task.taskIdentifier == identifier) {
+            request = task.pwn_request;
             [task cancel];
-            *stop = YES;
+            break;
         }
-    }];
+    }
+    return request;
 }
 
 @end

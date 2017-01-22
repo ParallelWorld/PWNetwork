@@ -11,6 +11,20 @@
 
 @implementation PWNRequest
 
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        
+        _httpMethodType = PWNHTTPMethodGET;
+        _timeoutInterval = 60.0;
+        
+        _useGeneralHost = YES;
+        _useGeneralHeaders = YES;
+        _useGeneralParameters = YES;
+    }
+    return self;
+}
+
 #pragma mark - Private method
 
 - (void)m_cleanCallbackBlocks {

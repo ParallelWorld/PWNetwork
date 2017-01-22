@@ -23,6 +23,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setupConfig:(void(^)(PWNCenterConfig *config))block;
 
 - (NSUInteger)sendRequest:(PWNRequestConfigBlock)config
+             onCompletion:(nullable PWNCompletionBlock)completion;
+
+- (NSUInteger)sendRequest:(PWNRequestConfigBlock)config
                 onSuccess:(nullable PWNSuccessBlock)success
                 onFailure:(nullable PWNFailureBlock)failure;
 
@@ -32,7 +35,9 @@ NS_ASSUME_NONNULL_BEGIN
                 onFailure:(nullable PWNFailureBlock)failure
              onCompletion:(nullable PWNCompletionBlock)completion;
 
-+ (void)cancelRequest:(NSUInteger)identifier;
+- (void)cancelRequest:(NSUInteger)identifier;
+- (void)cancelRequest:(NSUInteger)identifier
+             onCancel:(nullable PWNCancelBlock)cancel;
 
 @end
 

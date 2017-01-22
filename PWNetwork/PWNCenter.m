@@ -34,6 +34,10 @@
     self.config = config;
 }
 
+- (NSUInteger)sendRequest:(PWNRequestConfigBlock)config onCompletion:(PWNCompletionBlock)completion {
+    return [self sendRequest:config onProgress:nil onSuccess:nil onFailure:nil onCompletion:completion];
+}
+
 - (NSUInteger)sendRequest:(PWNRequestConfigBlock)config onSuccess:(PWNSuccessBlock)success onFailure:(PWNFailureBlock)failure {
     return [self sendRequest:config onProgress:nil onSuccess:success onFailure:failure onCompletion:nil];
 }
@@ -45,8 +49,13 @@
     return [self m_sendRequest:request];
 }
 
-+ (void)cancelRequest:(NSUInteger)identifier {
-    [[PWNEngine sharedEngine] cancelRequestByIdentifier:identifier];
+- (void)cancelRequest:(NSUInteger)identifier {
+    [self cancelRequest:identifier onCancel:nil];
+}
+
+- (void)cancelRequest:(NSUInteger)identifier onCancel:(PWNCancelBlock)cancel {
+    PWNRequest *request = [[PWNEngine sharedEngine] cancelRequestByIdentifier:identifier];
+    PWN_SAFE_BLOCK(cancel, request);
 }
 
 #pragma mark - Private method
