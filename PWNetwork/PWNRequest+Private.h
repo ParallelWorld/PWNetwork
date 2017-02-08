@@ -13,7 +13,7 @@
 
 @interface PWNRequest ()
 
-@property (nonatomic, assign) NSUInteger identifier;
+@property (nonatomic, copy, nullable) NSString *identifier;
 
 @property (nonatomic, copy, nullable) PWNSuccessBlock successBlock;
 
@@ -22,6 +22,12 @@
 @property (nonatomic, copy, nullable) PWNProgressBlock progressBlock;
 
 @property (nonatomic, copy, nullable) PWNCompletionBlock completionBlock;
+
+@property (nonatomic, strong, nullable) NSURLSessionDataTask *task;
+
+@property (nonatomic, copy, nullable) NSDictionary<NSString *, id> *entireParameters;
+
+@property (nonatomic, copy, nullable) NSDictionary<NSString *, id> *entireHeaders;
 
 - (void)m_cleanCallbackBlocks;
 

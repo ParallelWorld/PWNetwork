@@ -7,7 +7,7 @@
 //
 
 #import "PWNRequest.h"
-#import "PWNRequestInternal.h"
+#import "PWNRequest+Private.h"
 
 @implementation PWNRequest
 
@@ -15,13 +15,40 @@
     self = [super init];
     if (self) {
         
+        _requestType = PWNRequestNormal;
         _httpMethodType = PWNHTTPMethodGET;
+        _requestSerializerType = PWNRequestSerializerRaw;
+        _responseSerializerType = PWNResponseSerializerJSON;
         _timeoutInterval = 60.0;
+        _retryCount = 0;
+        _retryTimeInterval = 2;
         
         _useGeneralHost = YES;
         _useGeneralHeaders = YES;
         _useGeneralParameters = YES;
     }
+    return self;
+}
+
+#pragma mark - Public method
+
+- (PWNRequest *)onSuccess:(PWNSuccessBlock)block {
+    self.successBlock = block;
+    return self;
+}
+
+- (PWNRequest *)onFailure:(PWNFailureBlock)block {
+    self.failureBlock = block;
+    return self;
+}
+
+- (PWNRequest *)onProgress:(PWNProgressBlock)block {
+    self.progressBlock = block;
+    return self;
+}
+
+- (PWNRequest *)onCompletion:(PWNCompletionBlock)block {
+    self.completionBlock = block;
     return self;
 }
 

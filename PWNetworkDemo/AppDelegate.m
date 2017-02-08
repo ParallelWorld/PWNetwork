@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "PWNetwork.h"
 
 @interface AppDelegate ()
 
@@ -16,7 +17,13 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    [PWNLogger sharedLogger].level = PWNLoggerLevelDebug;
+    [[PWNLogger sharedLogger] startLogging];
+    
+    PWNDefaultCenter.generalHost = @"http://httpbin.org";
+    PWNDefaultCenter.generalParameters = @{@"global_param": @"global param value"};
+    PWNDefaultCenter.generalHeaders = @{@"global_header": @"global header value"};
+    
     return YES;
 }
 

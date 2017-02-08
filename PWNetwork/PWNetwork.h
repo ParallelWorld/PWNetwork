@@ -13,6 +13,7 @@
 #import "PWNDefines.h"
 #import "PWNRequest.h"
 #import "PWNCenter.h"
-#import "PWNCenterConfig.h"
+#import "PWNLogger.h"
+
 
 #endif /* PWNetwork_h */

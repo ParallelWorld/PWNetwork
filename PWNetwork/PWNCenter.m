@@ -9,10 +9,9 @@
 #import "PWNCenter.h"
 
 #import "PWNRequest.h"
-#import "PWNRequestInternal.h"
+#import "PWNRequest+Private.h"
 #import "PWNEngine.h"
-#import "PWNCenterConfig.h"
-#import "PWNCenterInternal.h"
+#import "PWNCenter+Private.h"
 
 
 @implementation PWNCenter
@@ -28,79 +27,42 @@
     return sharedInstance;
 }
 
-- (void)setupConfig:(void (^)(PWNCenterConfig * _Nonnull))block {
-    PWNCenterConfig *config = [PWNCenterConfig new];
-    PWN_SAFE_BLOCK(block, config);
-    self.config = config;
+- (void)sendRequest:(PWNRequest *)request {
+    [self m_processRequest:request];
+    [self m_sendRequest:request];
 }
 
-- (NSUInteger)sendRequest:(PWNRequestConfigBlock)config onCompletion:(PWNCompletionBlock)completion {
-    return [self sendRequest:config onProgress:nil onSuccess:nil onFailure:nil onCompletion:completion];
-}
-
-- (NSUInteger)sendRequest:(PWNRequestConfigBlock)config onSuccess:(PWNSuccessBlock)success onFailure:(PWNFailureBlock)failure {
-    return [self sendRequest:config onProgress:nil onSuccess:success onFailure:failure onCompletion:nil];
-}
-
-- (NSUInteger)sendRequest:(PWNRequestConfigBlock)config onProgress:(PWNProgressBlock)progress onSuccess:(PWNSuccessBlock)success onFailure:(PWNFailureBlock)failure onCompletion:(PWNCompletionBlock)completion {
-    PWNRequest *request = [PWNRequest new];
-    PWN_SAFE_BLOCK(config, request);
-    [self m_processRequest:request onProgress:progress onSuccess:success onFailure:failure onCompletion:completion];
-    return [self m_sendRequest:request];
-}
-
-- (void)cancelRequest:(NSUInteger)identifier {
-    [self cancelRequest:identifier onCancel:nil];
-}
-
-- (void)cancelRequest:(NSUInteger)identifier onCancel:(PWNCancelBlock)cancel {
-    PWNRequest *request = [[PWNEngine sharedEngine] cancelRequestByIdentifier:identifier];
-    PWN_SAFE_BLOCK(cancel, request);
+- (void)cancelRequest:(PWNRequest *)request {
+    [[PWNEngine sharedEngine] cancelRequest:request];
 }
 
 #pragma mark - Private method
 
-- (NSUInteger)m_sendRequest:(PWNRequest *)request {
-    return [[PWNEngine sharedEngine] sendRequest:request completionHandler:^(id responseObject, NSError *error) {
-        if (error) {
-            [self m_failureWithError:error forRequest:request];
-        } else {
-            [self m_successWithResponse:responseObject forRequest:request];
-        }
-    }];
-}
-
-- (void)m_processRequest:(PWNRequest *)request onProgress:(PWNProgressBlock)progress onSuccess:(PWNSuccessBlock)success onFailure:(PWNFailureBlock)failure onCompletion:(PWNCompletionBlock)completion {
-    // 处理回调
-    request.successBlock = success;
-    request.failureBlock = failure;
-    request.progressBlock = progress;
-    request.completionBlock = completion;
-    
+- (void)m_processRequest:(PWNRequest *)request {
     // 处理headers
-    if (request.useGeneralHeaders && self.config.generalHeaders) {
+    if (request.useGeneralHeaders) {
         NSMutableDictionary *headers = [NSMutableDictionary new];
-        [headers addEntriesFromDictionary:self.config.generalHeaders];
-        if (request.headers) {
-            [headers addEntriesFromDictionary:request.headers];
-        }
-        request.headers = headers;
+        if (self.generalHeaders) [headers addEntriesFromDictionary:self.generalHeaders];
+        if (request.headers) [headers addEntriesFromDictionary:request.headers];
+        request.entireHeaders = headers;
+    } else {
+        request.entireHeaders = request.headers;
     }
     
     // 处理parameters
-    if (request.useGeneralParameters && self.config.generalParameters) {
+    if (request.useGeneralParameters) {
         NSMutableDictionary *parameters = [NSMutableDictionary new];
-        [parameters addEntriesFromDictionary:self.config.generalParameters];
-        if (request.parameters) {
-            [parameters addEntriesFromDictionary:request.parameters];
-        }
-        request.parameters = parameters;
+        if (self.generalParameters) [parameters addEntriesFromDictionary:self.generalParameters];
+        if (request.parameters) [parameters addEntriesFromDictionary:request.parameters];
+        request.entireParameters = parameters;
+    } else {
+        request.entireParameters = request.parameters;
     }
     
     // 处理url
     if (request.url.length == 0) {
-        if (request.host.length == 0 && request.useGeneralHost && self.config.generalHost.length > 0) {
-            request.host = self.config.generalHost;
+        if (request.host.length == 0 && request.useGeneralHost && self.generalHost.length > 0) {
+            request.host = self.generalHost;
         }
         if (request.api.length > 0) {
             NSURL *baseURL = [NSURL URLWithString:request.host];
@@ -113,24 +75,41 @@
     PWNAssert(request.url.length > 0, @"request的url不能为空.");
 }
 
-- (void)m_executeFailureBlockWithError:(NSError *)error forRequest:(PWNRequest *)request {
-    PWN_SAFE_BLOCK(request.failureBlock, error);
-    PWN_SAFE_BLOCK(request.completionBlock, nil, error);
-    [request m_cleanCallbackBlocks];
-}
-
-- (void)m_executeSuccessBlockWithResponse:(id)responseObject forRequest:(PWNRequest *)request {
-    PWN_SAFE_BLOCK(request.successBlock, responseObject);
-    PWN_SAFE_BLOCK(request.completionBlock, responseObject, nil);
-    [request m_cleanCallbackBlocks];
+- (void)m_sendRequest:(PWNRequest *)request {
+    [[PWNEngine sharedEngine] sendRequest:request completionHandler:^(id responseObject, NSError *error) {
+        if (error) {
+            [self m_failureWithError:error forRequest:request];
+        } else {
+            [self m_successWithResponse:responseObject forRequest:request];
+        }
+    }];
 }
 
 - (void)m_failureWithError:(NSError *)error forRequest:(PWNRequest *)request {
+    // 请求失败重试
+    if (request.retryCount > 0) {
+        request.retryCount--;
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(request.retryTimeInterval * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self m_sendRequest:request];
+        });
+        return;
+    }
+    
     [self m_executeFailureBlockWithError:error forRequest:request];
 }
 
 - (void)m_successWithResponse:(id)responseObject forRequest:(PWNRequest *)request {
     [self m_executeSuccessBlockWithResponse:responseObject forRequest:request];
+}
+
+- (void)m_executeFailureBlockWithError:(NSError *)error forRequest:(PWNRequest *)request {
+    PWN_SAFE_BLOCK(request.failureBlock, error);
+    PWN_SAFE_BLOCK(request.completionBlock, nil, error);
+}
+
+- (void)m_executeSuccessBlockWithResponse:(id)responseObject forRequest:(PWNRequest *)request {
+    PWN_SAFE_BLOCK(request.successBlock, responseObject);
+    PWN_SAFE_BLOCK(request.completionBlock, responseObject, nil);
 }
 
 @end

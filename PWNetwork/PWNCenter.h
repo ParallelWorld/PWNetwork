@@ -12,6 +12,8 @@
 
 @class PWNRequest, PWNCenterConfig;
 
+#define PWNDefaultCenter [PWNCenter defaultCenter]
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface PWNCenter : NSObject
@@ -19,25 +21,20 @@ NS_ASSUME_NONNULL_BEGIN
 /// 默认的center，也可以定义自己的center，比如有多个业务场景或者多个host的情况下
 + (instancetype)defaultCenter;
 
-/// 配置center
-- (void)setupConfig:(void(^)(PWNCenterConfig *config))block;
+/// 公共host
+@property (nonatomic, copy, nullable) NSString *generalHost;
 
-- (NSUInteger)sendRequest:(PWNRequestConfigBlock)config
-             onCompletion:(nullable PWNCompletionBlock)completion;
+/// 公共parameter
+@property (nonatomic, copy, nullable) NSDictionary<NSString *, id> *generalParameters;
 
-- (NSUInteger)sendRequest:(PWNRequestConfigBlock)config
-                onSuccess:(nullable PWNSuccessBlock)success
-                onFailure:(nullable PWNFailureBlock)failure;
+/// 公共header
+@property (nonatomic, copy, nullable) NSDictionary<NSString *, NSString *> *generalHeaders;
 
-- (NSUInteger)sendRequest:(PWNRequestConfigBlock)config
-               onProgress:(nullable PWNProgressBlock)progress
-                onSuccess:(nullable PWNSuccessBlock)success
-                onFailure:(nullable PWNFailureBlock)failure
-             onCompletion:(nullable PWNCompletionBlock)completion;
+/// 发送request
+- (void)sendRequest:(PWNRequest *)request;
 
-- (void)cancelRequest:(NSUInteger)identifier;
-- (void)cancelRequest:(NSUInteger)identifier
-             onCancel:(nullable PWNCancelBlock)cancel;
+/// 取消request
+- (void)cancelRequest:(PWNRequest *)request;
 
 @end
 

@@ -17,6 +17,26 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    PWNRequest *r = [PWNRequest new];
+    r.api = @"get";
+    r.parameters = @{@"key": @"value",
+                     @"key1": @"中文value"};
+    r.httpMethodType = PWNHTTPMethodGET;
+    r.useGeneralParameters = NO;
+    r.useGeneralHeaders = NO;
+    
+    [[[[r onSuccess:^(id  _Nullable responseObject) {
+        
+    }] onFailure:^(NSError * _Nullable error) {
+        
+    }] onProgress:^(NSProgress * _Nonnull progress) {
+        
+    }] onCompletion:^(id  _Nullable responseObject, NSError * _Nullable error) {
+        
+    }];
+    
+    [PWNDefaultCenter sendRequest:r];
 }
 
 @end

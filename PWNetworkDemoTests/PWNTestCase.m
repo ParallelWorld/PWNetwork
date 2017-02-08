@@ -12,12 +12,14 @@
 
 - (void)setUp {
     [super setUp];
+    
     self.networkTimeout = 20;
-    [[PWNCenter defaultCenter] setupConfig:^(PWNCenterConfig * _Nonnull config) {
-        config.generalHost = @"http://httpbin.org";
-        config.generalParameters = @{@"global_param": @"global param value"};
-        config.generalHeaders = @{@"global_header": @"global header value"};
-    }];
+    PWNDefaultCenter.generalHost = @"http://httpbin.org";
+    PWNDefaultCenter.generalParameters = @{@"global_param": @"global param value"};
+    PWNDefaultCenter.generalHeaders = @{@"global_header": @"global header value"};
+    
+    [PWNLogger sharedLogger].level = PWNLoggerLevelDebug;
+    [[PWNLogger sharedLogger] startLogging];
 }
 
 - (void)waitForExpectationsWithCommonTimeout {
