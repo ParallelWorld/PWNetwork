@@ -19,6 +19,7 @@
 		0E57B41C1E31D31600572389 /* PWNNormalRequestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E57B41B1E31D31600572389 /* PWNNormalRequestTests.m */; };
 		0EDB004D1E49A967006F512F /* PWNEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EDB00491E49A967006F512F /* PWNEngine.m */; };
 		0EDB00501E49DFFE006F512F /* PWNLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EDB004F1E49DFFE006F512F /* PWNLogger.m */; };
+		0EDB005E1E4B3690006F512F /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 0EDB005D1E4B3690006F512F /* README.md */; };
 		5C2657E4E15EE4A36A9EA3F8 /* libPods-PWNetworkDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F3639331274B7767492C41A6 /* libPods-PWNetworkDemo.a */; };
 		D67F4828C8CB657AFFEAB119 /* libPods-PWNetworkDemoTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 18CC2CF979DBF15D96BB77C5 /* libPods-PWNetworkDemoTests.a */; };
 /* End PBXBuildFile section */
@@ -62,6 +63,7 @@
 		0EDB004B1E49A967006F512F /* PWNRequest+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PWNRequest+Private.h"; sourceTree = "<group>"; };
 		0EDB004E1E49DFFE006F512F /* PWNLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWNLogger.h; sourceTree = "<group>"; };
 		0EDB004F1E49DFFE006F512F /* PWNLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PWNLogger.m; sourceTree = "<group>"; };
+		0EDB005D1E4B3690006F512F /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		18CC2CF979DBF15D96BB77C5 /* libPods-PWNetworkDemoTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PWNetworkDemoTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		54283EFC430CEF3035A44CC5 /* Pods-PWNetworkDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PWNetworkDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-PWNetworkDemo/Pods-PWNetworkDemo.release.xcconfig"; sourceTree = "<group>"; };
 		61D7CFE647A823E3A35AF716 /* Pods-PWNetworkDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PWNetworkDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PWNetworkDemo/Pods-PWNetworkDemo.debug.xcconfig"; sourceTree = "<group>"; };
@@ -93,6 +95,7 @@
 		0E57B3B71E30909B00572389 = {
 			isa = PBXGroup;
 			children = (
+				0EDB005D1E4B3690006F512F /* README.md */,
 				0E57B4031E30CFAC00572389 /* PWNetwork */,
 				0E57B3C21E30909B00572389 /* PWNetworkDemo */,
 				0E57B3DC1E30909B00572389 /* PWNetworkDemoTests */,
@@ -393,6 +396,7 @@
 				0E57B3C81E30909B00572389 /* AppDelegate.m in Sources */,
 				0E57B3C51E30909B00572389 /* main.m in Sources */,
 				0EDB00501E49DFFE006F512F /* PWNLogger.m in Sources */,
+				0EDB005E1E4B3690006F512F /* README.md in Sources */,
 				0E57B4101E30CFAC00572389 /* PWNRequest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
