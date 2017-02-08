@@ -17,16 +17,24 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
     [PWNLogger sharedLogger].level = PWNLoggerLevelDebug;
     [[PWNLogger sharedLogger] startLogging];
+    
+    [[PWNReachability sharedInstance] startMonitoring];
     
     PWNDefaultCenter.generalHost = @"http://httpbin.org";
     PWNDefaultCenter.generalParameters = @{@"global_param": @"global param value"};
     PWNDefaultCenter.generalHeaders = @{@"global_header": @"global header value"};
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkChange:) name:PWNReachabilityDidChangeNotification object:nil];
+    
     return YES;
 }
 
+- (void)networkChange:(NSNotification *)notification {
+    NSLog(@"network changed %@", @([[PWNReachability sharedInstance] currentReachabilityStatus]));
+}
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

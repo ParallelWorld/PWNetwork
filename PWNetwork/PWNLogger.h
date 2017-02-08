@@ -17,11 +17,13 @@ typedef NS_ENUM(NSUInteger, PWNHTTPRequestLoggerLevel) {
     PWNLoggerLevelFatal = PWNLoggerLevelOff,
 };
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface PWNLogger : NSObject
 
 @property (nonatomic, assign) PWNHTTPRequestLoggerLevel level;
 
-@property (nonatomic, strong) NSPredicate *filterPredicate;
+@property (nonatomic, strong, nullable) NSPredicate *filterPredicate;
 
 + (instancetype)sharedLogger;
 
@@ -30,3 +32,5 @@ typedef NS_ENUM(NSUInteger, PWNHTTPRequestLoggerLevel) {
 - (void)stopLogging;
 
 @end
+
+NS_ASSUME_NONNULL_END

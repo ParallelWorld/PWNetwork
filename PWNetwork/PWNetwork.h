@@ -13,6 +13,7 @@
 #import "PWNDefines.h"
 #import "PWNRequest.h"
 #import "PWNCenter.h"
+#import "PWNReachability.h"
 #import "PWNLogger.h"
 
 
