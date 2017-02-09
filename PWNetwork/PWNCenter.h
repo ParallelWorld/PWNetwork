@@ -31,6 +31,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// 公共header
 @property (nonatomic, copy, nullable) NSDictionary<NSString *, NSString *> *generalHeaders;
 
+/// 公共request处理block，在发送request之前
+- (void)setRequestProcessBlock:(PWNRequestProcessBlock)block;
+
+/// 公共response处理block，在收到正确的response之后调用，发生网络错误时不会调用。
+- (void)setResponseProcessBlock:(PWNResponseProcessBlock)block;
 
 /// 发送request
 - (void)sendRequest:(PWNRequest *)request;

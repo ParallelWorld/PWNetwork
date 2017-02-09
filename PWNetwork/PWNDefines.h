@@ -56,6 +56,10 @@ typedef void (^PWNCompletionBlock)(id _Nullable responseObject, NSError * _Nulla
 typedef void (^PWNCancelBlock)(PWNRequest * _Nullable request);
 
 
+typedef void (^PWNRequestProcessBlock)(PWNRequest *request);
+typedef void (^PWNResponseProcessBlock)(PWNRequest *request, id _Nullable responseObject, NSError * _Nullable __autoreleasing *error);
+
+
 NS_ASSUME_NONNULL_END
 
 #endif /* PWNDefines_h */

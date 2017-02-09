@@ -10,19 +10,26 @@
 
 #import "PWNCenter.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class PWNRequest;
 
 @interface PWNCenter ()
 
+@property (nonatomic, copy, nullable) PWNRequestProcessBlock requestProcessHandler;
+@property (nonatomic, copy, nullable) PWNResponseProcessBlock responseProcessHandler;
+
 /// 对原始的request进行处理
-- (void)m_processRequest:(PWNRequest *)request;
+- (void)m_processRequest:(nullable PWNRequest *)request;
 
 /// 把request移交给PWNEngine发送
-- (void)m_sendRequest:(PWNRequest *)request;
+- (void)m_sendRequest:(nullable PWNRequest *)request;
 
-- (void)m_successWithResponse:(id)responseObject forRequest:(PWNRequest *)request;
-- (void)m_failureWithError:(NSError *)error forRequest:(PWNRequest *)request;
-- (void)m_executeSuccessBlockWithResponse:(id)responseObject forRequest:(PWNRequest *)request;
-- (void)m_executeFailureBlockWithError:(NSError *)error forRequest:(PWNRequest *)request;
+- (void)m_successWithResponse:(nullable id)responseObject forRequest:(nullable PWNRequest *)request;
+- (void)m_failureWithError:(nullable NSError *)error forRequest:(nullable PWNRequest *)request;
+- (void)m_executeSuccessBlockWithResponse:(nullable id)responseObject forRequest:(nullable PWNRequest *)request;
+- (void)m_executeFailureBlockWithError:(nullable NSError *)error forRequest:(nullable PWNRequest *)request;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -50,8 +50,17 @@ NSTimeInterval PWNTimeoutIntervalForReachabilityStatus(PWNReachabilityStatus sta
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)setRequestProcessBlock:(PWNRequestProcessBlock)block {
+    self.requestProcessHandler = block;
+}
+
+- (void)setResponseProcessBlock:(PWNResponseProcessBlock)block {
+    self.responseProcessHandler = block;
+}
+
 - (void)sendRequest:(PWNRequest *)request {
     [self m_processRequest:request];
+    PWN_SAFE_BLOCK(self.requestProcessHandler, request);
     [self m_sendRequest:request];
 }
 
@@ -122,6 +131,14 @@ NSTimeInterval PWNTimeoutIntervalForReachabilityStatus(PWNReachabilityStatus sta
 }
 
 - (void)m_successWithResponse:(id)responseObject forRequest:(PWNRequest *)request {
+    // 有可能有业务上的错误
+    NSError *processError = nil;
+    PWN_SAFE_BLOCK(self.responseProcessHandler, request, responseObject, &processError);
+    if (processError) {
+        [self m_failureWithError:processError forRequest:request];
+        return;
+    }
+    
     [self m_executeSuccessBlockWithResponse:responseObject forRequest:request];
 }
 
