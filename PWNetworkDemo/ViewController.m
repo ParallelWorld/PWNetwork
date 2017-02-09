@@ -10,7 +10,7 @@
 #import "PWNetwork.h"
 
 @interface ViewController ()
-
+@property (nonatomic, strong) PWNRequest *r;
 @end
 
 @implementation ViewController
@@ -18,15 +18,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    PWNRequest *r = [PWNRequest new];
-    r.api = @"get";
-    r.parameters = @{@"key": @"value",
+    self.r = [PWNRequest new];
+    self.r.api = @"get";
+    self.r.parameters = @{@"key": @"value",
                      @"key1": @"中文value"};
-    r.httpMethodType = PWNHTTPMethodGET;
-    r.useGeneralParameters = NO;
-    r.useGeneralHeaders = NO;
+    self.r.httpMethodType = PWNHTTPMethodGET;
+    self.r.useGeneralParameters = NO;
+    self.r.useGeneralHeaders = NO;
     
-    [[[[r onSuccess:^(id  _Nullable responseObject) {
+    [[[[self.r onSuccess:^(id  _Nullable responseObject) {
         
     }] onFailure:^(NSError * _Nullable error) {
         
@@ -36,7 +36,11 @@
         
     }];
     
-    [PWNDefaultCenter sendRequest:r];
+    [PWNDefaultCenter sendRequest:self.r];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [PWNDefaultCenter sendRequest:self.r];
+    });
 }
 
 @end

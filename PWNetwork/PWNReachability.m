@@ -12,6 +12,15 @@
 
 NSString * const PWNReachabilityDidChangeNotification = @"PWNReachabilityDidChangeNotification";
 
+NSString * PWNStringFromNetworkReachabilityStatus(PWNReachabilityStatus status) {
+    switch (status) {
+        case PWNReachabilityStatusNotReachable: return @"Not Reachable";
+        case PWNReachabilityStatusReachableViaWWAN: return @"Reachable via WWAN";
+        case PWNReachabilityStatusReachableViaWiFi: return @"Reachable via WiFi";
+        case PWNReachabilityStatusUnknown: return @"Unknown";
+    }
+}
+
 @implementation PWNReachability
 
 + (instancetype)sharedInstance {

@@ -12,6 +12,17 @@
 #import "PWNRequest+Private.h"
 #import "PWNEngine.h"
 #import "PWNCenter+Private.h"
+#import "PWNReachability.h"
+
+
+NSTimeInterval PWNTimeoutIntervalForReachabilityStatus(PWNReachabilityStatus status) {
+    switch (status) {
+        case PWNReachabilityStatusUnknown: return 30;
+        case PWNReachabilityStatusNotReachable: return 0;
+        case PWNReachabilityStatusReachableViaWiFi: return 20;
+        case PWNReachabilityStatusReachableViaWWAN: return 50;
+    }
+}
 
 
 @implementation PWNCenter
@@ -25,6 +36,18 @@
         sharedInstance = [[[self class] alloc] init];
     });
     return sharedInstance;
+}
+
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+
+    }
+    return self;
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)sendRequest:(PWNRequest *)request {

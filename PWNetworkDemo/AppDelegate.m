@@ -21,8 +21,6 @@
     [PWNLogger sharedLogger].level = PWNLoggerLevelDebug;
     [[PWNLogger sharedLogger] startLogging];
     
-    [[PWNReachability sharedInstance] startMonitoring];
-    
     PWNDefaultCenter.generalHost = @"http://httpbin.org";
     PWNDefaultCenter.generalParameters = @{@"global_param": @"global param value"};
     PWNDefaultCenter.generalHeaders = @{@"global_header": @"global header value"};
@@ -33,7 +31,9 @@
 }
 
 - (void)networkChange:(NSNotification *)notification {
-    NSLog(@"network changed %@", @([[PWNReachability sharedInstance] currentReachabilityStatus]));
+    PWNReachabilityStatus status = [[PWNReachability sharedInstance] currentReachabilityStatus];
+    NSString *statusString = PWNStringFromNetworkReachabilityStatus(status);
+    NSLog(@"Network changes to %@", statusString);
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

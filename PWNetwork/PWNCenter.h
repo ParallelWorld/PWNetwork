@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #import "PWNDefines.h"
+#import "PWNReachability.h"
 
 @class PWNRequest, PWNCenterConfig;
 
@@ -30,6 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// 公共header
 @property (nonatomic, copy, nullable) NSDictionary<NSString *, NSString *> *generalHeaders;
 
+
 /// 发送request
 - (void)sendRequest:(PWNRequest *)request;
 
@@ -37,5 +39,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)cancelRequest:(PWNRequest *)request;
 
 @end
+
+/// 获取不同网络状态下的timeoutInterval
+FOUNDATION_EXPORT NSTimeInterval PWNTimeoutIntervalForReachabilityStatus(PWNReachabilityStatus status);
 
 NS_ASSUME_NONNULL_END

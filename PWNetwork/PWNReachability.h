@@ -35,6 +35,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+/// 网络状态发生变化的通知，object传的是PWNReachability对象
 FOUNDATION_EXPORT NSString * const PWNReachabilityDidChangeNotification;
+
+FOUNDATION_EXPORT NSString * PWNStringFromNetworkReachabilityStatus(PWNReachabilityStatus status);
 
 NS_ASSUME_NONNULL_END

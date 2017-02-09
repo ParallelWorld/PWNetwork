@@ -249,6 +249,7 @@
 				TargetAttributes = {
 					0E57B3BF1E30909B00572389 = {
 						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = 65UUVDTS99;
 						ProvisioningStyle = Automatic;
 					};
 					0E57B3D81E30909B00572389 = {
@@ -539,6 +540,7 @@
 			baseConfigurationReference = 61D7CFE647A823E3A35AF716 /* Pods-PWNetworkDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 65UUVDTS99;
 				INFOPLIST_FILE = PWNetworkDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.parallelworld.PWNetworkDemo;
@@ -551,6 +553,7 @@
 			baseConfigurationReference = 54283EFC430CEF3035A44CC5 /* Pods-PWNetworkDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 65UUVDTS99;
 				INFOPLIST_FILE = PWNetworkDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.parallelworld.PWNetworkDemo;

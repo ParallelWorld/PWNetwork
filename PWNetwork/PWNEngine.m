@@ -12,6 +12,9 @@
 #import "PWNRequest.h"
 #import "PWNRequest+Private.h"
 #import "PWNEngine+Private.h"
+#import "AFNetworkActivityIndicatorManager.h"
+#import "PWNReachability.h"
+
 
 NSString * const PWNetworkRequestDidStartNotification = @"PWNetworkRequestDidStartNotification";
 
@@ -26,6 +29,15 @@ NSString * const PWNetworkRequestDidCompleteResponseDataKey = @"PWNetworkRequest
 NSString * const PWNetworkRequestDidCompleteErrorKey = @"PWNetworkRequestDidCompleteErrorKey";
 
 NSString * const PWNetworkRequestDidCompleteSerializedResponseKey = @"PWNetworkRequestDidCompleteSerializedResponseKey";
+
+static NSUInteger PWNMaxConcurrentOperationCountForReachabilityStatus(PWNReachabilityStatus status) {
+    switch (status) {
+        case PWNReachabilityStatusUnknown: return 35;
+        case PWNReachabilityStatusNotReachable: return 10;
+        case PWNReachabilityStatusReachableViaWiFi: return 35;
+        case PWNReachabilityStatusReachableViaWWAN: return 15;
+    }
+}
 
 @implementation PWNEngine
 
@@ -53,10 +65,30 @@ NSString * const PWNetworkRequestDidCompleteSerializedResponseKey = @"PWNetworkR
         _sessionManager = [AFHTTPSessionManager manager];
         _sessionManager.requestSerializer = _afHTTPRequestSerializer;
         _sessionManager.responseSerializer = _afHTTPResponseSerializer;
-        // TODO 设置最大并发量
-//        _sessionManager.operationQueue.maxConcurrentOperationCount = 5;
+        
+        // 设置最大并发量
+        _sessionManager.operationQueue.maxConcurrentOperationCount = PWNMaxConcurrentOperationCountForReachabilityStatus([PWNReachability sharedInstance].currentReachabilityStatus);
+        
+        [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkReachabilityDidChange:) name:PWNReachabilityDidChangeNotification object:nil];
     }
     return self;
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
++ (void)load {
+    [[PWNReachability sharedInstance] startMonitoring];
+}
+
+
+#pragma mark - Notification 
+
+- (void)networkReachabilityDidChange:(NSNotification *)notification {
+    self.sessionManager.operationQueue.maxConcurrentOperationCount = PWNMaxConcurrentOperationCountForReachabilityStatus([PWNReachability sharedInstance].currentReachabilityStatus);
 }
 
 - (void)sendRequest:(PWNRequest *)request completionHandler:(PWNCompletionHandler)completionHandler {

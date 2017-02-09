@@ -50,7 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// response序列化类型，默认是PWNResponseSerializerJSON
 @property (nonatomic, assign) PWNResponseSerializerType responseSerializerType;
 
-/// 默认是60，根据不同网络状态进行变化（TODO）
+/// 创建request根据不同网络状态有不同的默认值，参照PWNCenter
 @property (nonatomic, assign) NSTimeInterval timeoutInterval;
 
 /// 错误发生时重试的次数，默认是0次。

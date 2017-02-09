@@ -8,6 +8,8 @@
 
 #import "PWNRequest.h"
 #import "PWNRequest+Private.h"
+#import "PWNReachability.h"
+#import "PWNCenter.h"
 
 @implementation PWNRequest
 
@@ -19,15 +21,21 @@
         _httpMethodType = PWNHTTPMethodGET;
         _requestSerializerType = PWNRequestSerializerRaw;
         _responseSerializerType = PWNResponseSerializerJSON;
-        _timeoutInterval = 60.0;
+        _timeoutInterval = PWNTimeoutIntervalForReachabilityStatus([PWNReachability sharedInstance].currentReachabilityStatus);
         _retryCount = 0;
         _retryTimeInterval = 2;
         
         _useGeneralHost = YES;
         _useGeneralHeaders = YES;
         _useGeneralParameters = YES;
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkReachabilityDidChange:) name:PWNReachabilityDidChangeNotification object:nil];
     }
     return self;
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Public method
@@ -50,6 +58,12 @@
 - (PWNRequest *)onCompletion:(PWNCompletionBlock)block {
     self.completionBlock = block;
     return self;
+}
+
+#pragma mark - Notification 
+
+- (void)networkReachabilityDidChange:(NSNotification *)notification {
+    self.timeoutInterval = PWNTimeoutIntervalForReachabilityStatus([PWNReachability sharedInstance].currentReachabilityStatus);
 }
 
 #pragma mark - Private method
