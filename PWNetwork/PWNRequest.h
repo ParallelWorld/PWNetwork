@@ -59,8 +59,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// 重试时间间隔，默认是2s。
 @property (nonatomic, assign) NSTimeInterval retryTimeInterval;
 
-/// 下载保存的地址
-@property (nonatomic, copy, nullable) NSString *downloadSavePath;
+/// 下载保存的目录，只在requestType是PWNRequestDownload时有效。如果为nil，则写入到系统caches目录下。
+@property (nonatomic, copy, nullable) NSString *downloadFileDirectory;
+/// 下载保存的文件名。如果不设定downloadFileDirectory，只设定downloadFileName，则文件保存在系统cache目录下downloadFileName文件中。如果downloadFileName是nil，文件名是毫秒数时间戳。
+@property (nonatomic, copy, nullable) NSString *downloadFileName;
+/// 最终下载的地址
+@property (nonatomic, copy, nullable, readonly) NSString *downloadFilePath;
 
 #pragma mark - Call back
 

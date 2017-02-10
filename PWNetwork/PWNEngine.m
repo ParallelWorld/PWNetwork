@@ -39,6 +39,13 @@ static NSUInteger PWNMaxConcurrentOperationCountForReachabilityStatus(PWNReachab
     }
 }
 
+NSString *PWNStringFromDate(NSDate *date) {
+    NSDateFormatter *dateFormatter = [NSDateFormatter new];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd-HH-mm-ss"];
+    NSString *dateString = [dateFormatter stringFromDate:date];
+    return [dateString stringByAppendingString:[NSString stringWithFormat:@"-%ld", (long)date.timeIntervalSince1970]];
+}
+
 @implementation PWNEngine
 
 + (instancetype)sharedEngine {
@@ -167,7 +174,7 @@ static NSUInteger PWNMaxConcurrentOperationCountForReachabilityStatus(PWNReachab
             }
         }
     }
-    [self m_postRequestDidCompleteNotification:request.task withUserInfo:userInfo];
+    [self m_postRequestDidCompleteNotification:request withUserInfo:userInfo];
 }
 
 - (void)m_setIdentifierForRequest:(PWNRequest *)request urlSessiontask:(NSURLSessionTask *)task sessionManager:(AFHTTPSessionManager *)manager {
@@ -178,7 +185,7 @@ static NSUInteger PWNMaxConcurrentOperationCountForReachabilityStatus(PWNReachab
     request.identifier = identifier;
 }
 
-- (void)m_bindTask:(NSURLSessionDataTask *)task toRequest:(PWNRequest *)request {
+- (void)m_bindTask:(NSURLSessionTask *)task toRequest:(PWNRequest *)request {
     request.task = task;
 }
 
@@ -203,15 +210,15 @@ static NSUInteger PWNMaxConcurrentOperationCountForReachabilityStatus(PWNReachab
     return nil;
 }
 
-- (void)m_postRequestDidStartNotification:(NSURLSessionTask *)task {
+- (void)m_postRequestDidStartNotification:(PWNRequest *)request {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:PWNetworkRequestDidStartNotification object:task];
+        [[NSNotificationCenter defaultCenter] postNotificationName:PWNetworkRequestDidStartNotification object:request];
     });
 }
 
-- (void)m_postRequestDidCompleteNotification:(NSURLSessionTask *)task withUserInfo:(NSDictionary *)userInfo {
+- (void)m_postRequestDidCompleteNotification:(PWNRequest *)request withUserInfo:(NSDictionary *)userInfo {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:PWNetworkRequestDidCompleteNotification object:task userInfo:userInfo];
+        [[NSNotificationCenter defaultCenter] postNotificationName:PWNetworkRequestDidCompleteNotification object:request userInfo:userInfo];
     });
 }
 
@@ -249,11 +256,68 @@ static NSUInteger PWNMaxConcurrentOperationCountForReachabilityStatus(PWNReachab
     
     [dataTask resume];
     
-    [self m_postRequestDidStartNotification:request.task];
+    [self m_postRequestDidStartNotification:request];
 }
 
 - (void)m_downloadTaskWithRequest:(PWNRequest *)request completionHandler:(PWNCompletionHandler)completion {
     
+    NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:request.url]];
+    [self m_processURLRequest:urlRequest withPWNRequest:request];
+    
+    NSString *downloadFileSavePath;
+    
+    NSString *cachesDirectoryPath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject];
+    NSString *cachesFileName = PWNStringFromDate([NSDate date]);
+    NSString *cachesFileSavePath = [cachesDirectoryPath stringByAppendingPathComponent:cachesFileName];
+
+    if (request.downloadFileDirectory) {
+        BOOL isDir;
+        BOOL exist = [[NSFileManager defaultManager] fileExistsAtPath:request.downloadFileDirectory isDirectory:&isDir];
+        if (isDir) {
+            NSError *error;
+            if (!exist) {
+                [[NSFileManager defaultManager] createDirectoryAtPath:request.downloadFileDirectory withIntermediateDirectories:YES attributes:nil error:&error];
+            }
+            if (error || !request.downloadFileName) {
+                downloadFileSavePath = cachesFileSavePath;
+            } else {
+                downloadFileSavePath = [request.downloadFileDirectory stringByAppendingPathComponent:request.downloadFileName];
+            }
+        }
+    } else {
+        if (request.downloadFileName) {
+            downloadFileSavePath = [cachesDirectoryPath stringByAppendingPathComponent:request.downloadFileName];
+        } else {
+            downloadFileSavePath = cachesFileSavePath;
+        }
+    }
+    
+    request.downloadFilePath = downloadFileSavePath;
+    
+    NSURLSessionDownloadTask *downloadTask = nil;
+    __weak __typeof__(self) weakSelf = self;
+    downloadTask = [self.sessionManager downloadTaskWithRequest:urlRequest progress:request.progressBlock destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
+        return [NSURL fileURLWithPath:downloadFileSavePath isDirectory:NO];
+    } completionHandler:^(NSURLResponse * _Nonnull response, NSURL * _Nullable filePath, NSError * _Nullable error) {
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        if (completion) {
+            completion(filePath, error);
+        }
+        
+        NSMutableDictionary *userInfo = [NSMutableDictionary new];
+        if (error) {
+            userInfo[PWNetworkRequestDidCompleteErrorKey] = error;
+        }
+        [strongSelf m_postRequestDidCompleteNotification:request withUserInfo:userInfo];
+    }];
+    
+    [self m_setIdentifierForRequest:request urlSessiontask:downloadTask sessionManager:self.sessionManager];
+    
+    [self m_bindTask:downloadTask toRequest:request];
+    
+    [downloadTask resume];
+    
+    [self m_postRequestDidStartNotification:request];
 }
 
 - (void)m_uploadTaskWithRequest:(PWNRequest *)request completionHandler:(PWNCompletionHandler)completion {

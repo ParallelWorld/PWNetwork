@@ -19,28 +19,24 @@
     [super viewDidLoad];
     
     self.r = [PWNRequest new];
-    self.r.api = @"get";
-    self.r.parameters = @{@"key": @"value",
-                     @"key1": @"中文value"};
-    self.r.httpMethodType = PWNHTTPMethodGET;
-    self.r.useGeneralParameters = NO;
-    self.r.useGeneralHeaders = NO;
+    
+    self.r.url = @"http://pic.qiantucdn.com/00/92/26/19bOOOPIC1d.jpg";
+    self.r.api = @"image/png";
+    self.r.requestType = PWNRequestDownload;
+//    self.r.downloadFileDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+//    self.r.downloadFileName = @"test.png";
     
     [[[[self.r onSuccess:^(id  _Nullable responseObject) {
         
-    }] onFailure:^(NSError * _Nullable error) {
-        
     }] onProgress:^(NSProgress * _Nonnull progress) {
+        NSLog(@"%lf", progress.fractionCompleted);
+    }] onFailure:^(NSError * _Nullable error) {
         
     }] onCompletion:^(id  _Nullable responseObject, NSError * _Nullable error) {
         
     }];
     
     [PWNDefaultCenter sendRequest:self.r];
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [PWNDefaultCenter sendRequest:self.r];
-    });
 }
 
 @end

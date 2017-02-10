@@ -9,26 +9,23 @@
 #import "PWNLogger.h"
 #import "AFNetworking.h"
 #import "PWNEngine.h"
+#import "PWNRequest.h"
+#import "PWNRequest+Private.h"
 
 #import <objc/runtime.h>
 
 static NSURLRequest * PWNetworkRequestFromNotification(NSNotification *notification) {
-    NSURLRequest *request = nil;
-    if ([[notification object] respondsToSelector:@selector(originalRequest)]) {
-        request = [[notification object] originalRequest];
-    } else if ([[notification object] respondsToSelector:@selector(request)]) {
-        request = [[notification object] request];
-    }
-    return request;
+    PWNRequest *request = [notification object];
+    return request.task.originalRequest;
 }
 
 static NSError * PWNetworkErrorFromNotification(NSNotification *notification) {
     NSError *error = nil;
-    if ([[notification object] isKindOfClass:[NSURLSessionTask class]]) {
-        error = [(NSURLSessionTask *)[notification object] error];
-        if (!error) {
-            error = notification.userInfo[PWNetworkRequestDidCompleteErrorKey];
-        }
+    PWNRequest *request = [notification object];
+    NSDictionary *userInfo = [notification userInfo];
+    error = request.task.error;
+    if (!error) {
+        error = userInfo[PWNetworkRequestDidCompleteErrorKey];
     }
     return error;
 }
@@ -85,6 +82,7 @@ static void * PWNetworkRequestStartDate = &PWNetworkRequestStartDate;
 
 - (void)networkRequestDidStart:(NSNotification *)notification {
     NSURLRequest *request = PWNetworkRequestFromNotification(notification);
+    PWNRequest *pwnRequest = notification.object;
     
     if (!request) {
         return;
@@ -94,7 +92,7 @@ static void * PWNetworkRequestStartDate = &PWNetworkRequestStartDate;
         return;
     }
     
-    objc_setAssociatedObject(notification.object, PWNetworkRequestStartDate, [NSDate date], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(pwnRequest, PWNetworkRequestStartDate, [NSDate date], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     
     NSString *body = nil;
     if ([request HTTPBody]) {
@@ -139,8 +137,9 @@ static void * PWNetworkRequestStartDate = &PWNetworkRequestStartDate;
 }
 
 - (void)networkRequestDidComplete:(NSNotification *)notification {
+    PWNRequest *pwnRequest = notification.object;
     NSURLRequest *request = PWNetworkRequestFromNotification(notification);
-    NSURLResponse *response = [notification.object response];
+    NSURLResponse *response = pwnRequest.task.response;
     NSError *error = PWNetworkErrorFromNotification(notification);
     
     if (!request && !response) {
@@ -163,7 +162,7 @@ static void * PWNetworkRequestStartDate = &PWNetworkRequestStartDate;
         responseObject = notification.userInfo[PWNetworkRequestDidCompleteSerializedResponseKey];
     }
     
-    NSTimeInterval elapsedTime = [[NSDate date] timeIntervalSinceDate:objc_getAssociatedObject(notification.object, PWNetworkRequestStartDate)];
+    NSTimeInterval elapsedTime = [[NSDate date] timeIntervalSinceDate:objc_getAssociatedObject(pwnRequest, PWNetworkRequestStartDate)];
     
     
     // 打印
@@ -201,7 +200,14 @@ static void * PWNetworkRequestStartDate = &PWNetworkRequestStartDate;
                 [logString appendFormat:@"HTTP Decoded URL  %@\n", request.URL.absoluteString.stringByRemovingPercentEncoding];
                 [logString appendFormat:@"HTTP Headers      %@\n", responseHeaderFields];
                 [logString appendFormat:@"ElapsedTime       %.04f s\n", elapsedTime];
-                [logString appendFormat:@"HTTP Response     %@\n", responseObject];
+
+                if (pwnRequest.requestType == PWNRequestNormal) {
+                    [logString appendFormat:@"HTTP Response     %@\n", responseObject];
+                } else if (pwnRequest.requestType == PWNRequestDownload){
+                    [logString appendFormat:@"DownloadFilePath  %@\n", pwnRequest.downloadFilePath];
+                } else if (pwnRequest.requestType == PWNRequestUpload) {
+                    [logString appendFormat:@"uploadFilePath    %@\n", nil];
+                }
                 break;
             }
             case PWNLoggerLevelInfo: {

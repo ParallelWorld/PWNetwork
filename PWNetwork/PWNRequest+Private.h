@@ -23,11 +23,13 @@
 
 @property (nonatomic, copy, nullable) PWNCompletionBlock completionBlock;
 
-@property (nonatomic, strong, nullable) NSURLSessionDataTask *task;
+@property (nonatomic, strong, nullable) NSURLSessionTask *task;
 
 @property (nonatomic, copy, nullable) NSDictionary<NSString *, id> *entireParameters;
 
 @property (nonatomic, copy, nullable) NSDictionary<NSString *, id> *entireHeaders;
+
+@property (nonatomic, copy, nullable) NSString *downloadFilePath;
 
 - (void)m_cleanCallbackBlocks;
 
