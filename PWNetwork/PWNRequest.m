@@ -10,6 +10,16 @@
 #import "PWNRequest+Private.h"
 #import "PWNReachability.h"
 #import "PWNCenter.h"
+#import "PWNUploadFormData.h"
+
+NSString *PWNStringForRequestType(PWNRequestType type) {
+    switch (type) {
+        case PWNRequestNormal: return @"Normal";
+        case PWNRequestDownload: return @"Download";
+        case PWNRequestUpload: return @"Upload";
+    }
+    return nil;
+}
 
 @implementation PWNRequest
 
@@ -28,6 +38,8 @@
         _useGeneralHost = YES;
         _useGeneralHeaders = YES;
         _useGeneralParameters = YES;
+        
+        _uploadFormDatas = [NSMutableArray new];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkReachabilityDidChange:) name:PWNReachabilityDidChangeNotification object:nil];
     }
@@ -58,6 +70,38 @@
 - (PWNRequest *)onCompletion:(PWNCompletionBlock)block {
     self.completionBlock = block;
     return self;
+}
+
+- (void)addFormDataWithName:(NSString *)name fileURL:(NSURL *)fileURL {
+    PWNUploadFormData *formData = [PWNUploadFormData new];
+    formData.name = name;
+    formData.fileURL = fileURL;
+    [self.uploadFormDatas addObject:formData];
+}
+
+- (void)addFormDataWithName:(NSString *)name fileData:(NSData *)fileData {
+    PWNUploadFormData *formData = [PWNUploadFormData new];
+    formData.name = name;
+    formData.fileData = fileData;
+    [self.uploadFormDatas addObject:formData];
+}
+
+- (void)addFormDataWithName:(NSString *)name fileName:(NSString *)fileName mimeType:(NSString *)mimeType fileURL:(NSURL *)fileURL {
+    PWNUploadFormData *formData = [PWNUploadFormData new];
+    formData.name = name;
+    formData.fileURL = fileURL;
+    formData.fileName = fileName;
+    formData.mimeType = mimeType;
+    [self.uploadFormDatas addObject:formData];
+}
+
+- (void)addFormDataWithName:(NSString *)name fileName:(NSString *)fileName mimeType:(NSString *)mimeType fileData:(NSData *)fileData {
+    PWNUploadFormData *formData = [PWNUploadFormData new];
+    formData.name = name;
+    formData.fileData = fileData;
+    formData.fileName = fileName;
+    formData.mimeType = mimeType;
+    [self.uploadFormDatas addObject:formData];
 }
 
 #pragma mark - Notification 

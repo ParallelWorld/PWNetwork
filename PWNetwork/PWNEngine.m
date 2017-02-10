@@ -14,6 +14,7 @@
 #import "PWNEngine+Private.h"
 #import "AFNetworkActivityIndicatorManager.h"
 #import "PWNReachability.h"
+#import "PWNUploadFormData.h"
 
 
 NSString * const PWNetworkRequestDidStartNotification = @"PWNetworkRequestDidStartNotification";
@@ -223,6 +224,7 @@ NSString *PWNStringFromDate(NSDate *date) {
 }
 
 - (void)m_dataTaskWithRequest:(PWNRequest *)request completionHandler:(PWNCompletionHandler)completion {
+    
     NSString *httpMethod = [self m_httpMethodForType:request.httpMethodType];
     PWNAssert(httpMethod.length > 0, @"Unknown HTTP method.");
     
@@ -322,6 +324,56 @@ NSString *PWNStringFromDate(NSDate *date) {
 
 - (void)m_uploadTaskWithRequest:(PWNRequest *)request completionHandler:(PWNCompletionHandler)completion {
     
+    __block NSError *serializationError = nil;
+    AFHTTPRequestSerializer *requestSerializer = [self m_requestSerializerForRequest:request];
+    NSMutableURLRequest *urlRequest = [requestSerializer multipartFormRequestWithMethod:@"POST" URLString:request.url parameters:request.parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        for (PWNUploadFormData *data in request.uploadFormDatas) {
+            if (data.fileData) {
+                if (data.fileName && data.mimeType) {
+                    [formData appendPartWithFileData:data.fileData name:data.name fileName:data.fileName mimeType:data.mimeType];
+                } else {
+                    [formData appendPartWithFormData:data.fileData name:data.name];
+                }
+            } else if (data.fileURL) {
+                NSError *fileError;
+                if (data.fileName && data.mimeType) {
+                    [formData appendPartWithFileURL:data.fileURL name:data.name fileName:data.fileName mimeType:data.mimeType error:&fileError];
+                } else {
+                    [formData appendPartWithFileURL:data.fileURL name:data.name error:&fileError];
+                }
+                if (fileError) {
+                    serializationError = fileError;
+                    break;
+                }
+            }
+        }
+    } error:&serializationError];
+    
+    if (serializationError) {
+        if (completion) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completion(nil, serializationError);
+            });
+        }
+        return;
+    }
+    
+    [self m_processURLRequest:urlRequest withPWNRequest:request];
+    
+    NSURLSessionUploadTask *uploadTask = nil;
+    __weak __typeof__(self) weakSelf = self;
+    uploadTask = [self.sessionManager uploadTaskWithStreamedRequest:urlRequest progress:request.progressBlock completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
+        __strong __typeof__(weakSelf) strongSelf = weakSelf;
+        [strongSelf m_processResponse:response responseObject:responseObject error:error request:request completionHandler:completion];
+    }];
+
+    [self m_setIdentifierForRequest:request urlSessiontask:uploadTask sessionManager:self.sessionManager];
+    
+    [self m_bindTask:uploadTask toRequest:request];
+    
+    [uploadTask resume];
+    
+    [self m_postRequestDidStartNotification:request];
 }
 
 @end

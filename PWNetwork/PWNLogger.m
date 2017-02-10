@@ -115,6 +115,7 @@ static void * PWNetworkRequestStartDate = &PWNetworkRequestStartDate;
             [logString appendFormat:@"HTTP Method       %@\n", request.HTTPMethod];
             [logString appendFormat:@"HTTP Host         %@\n", request.URL.host];
             [logString appendFormat:@"HTTP Api          %@\n", request.URL.path];
+            [logString appendFormat:@"HTTP Request Type %@\n", PWNStringForRequestType(pwnRequest.requestType)];
             [logString appendFormat:@"HTTP Headers      %@\n", request.allHTTPHeaderFields];
             [logString appendFormat:@"HTTP Parameters   %@\n", PWNetworkDictionaryFromURLQuery(request.URL.query)];
             [logString appendFormat:@"HTTP Body         %@\n", body];
@@ -196,6 +197,7 @@ static void * PWNetworkRequestStartDate = &PWNetworkRequestStartDate;
             case PWNLoggerLevelDebug: {
                 [logString appendFormat:@"HTTP StatusCode   %@\n", @(responseStatusCode)];
                 [logString appendFormat:@"HTTP Method       %@\n", request.HTTPMethod];
+                [logString appendFormat:@"HTTP Request Type %@\n", PWNStringForRequestType(pwnRequest.requestType)];
                 [logString appendFormat:@"HTTP Encoded URL  %@\n", request.URL.absoluteString];
                 [logString appendFormat:@"HTTP Decoded URL  %@\n", request.URL.absoluteString.stringByRemovingPercentEncoding];
                 [logString appendFormat:@"HTTP Headers      %@\n", responseHeaderFields];
@@ -206,7 +208,7 @@ static void * PWNetworkRequestStartDate = &PWNetworkRequestStartDate;
                 } else if (pwnRequest.requestType == PWNRequestDownload){
                     [logString appendFormat:@"DownloadFilePath  %@\n", pwnRequest.downloadFilePath];
                 } else if (pwnRequest.requestType == PWNRequestUpload) {
-                    [logString appendFormat:@"uploadFilePath    %@\n", nil];
+                    [logString appendFormat:@"Upload Response   %@\n", responseObject];
                 }
                 break;
             }

@@ -11,6 +11,10 @@
 #import "PWNDefines.h"
 #import "PWNRequest.h"
 
+@class PWNUploadFormData;
+
+NS_ASSUME_NONNULL_BEGIN
+
 @interface PWNRequest ()
 
 @property (nonatomic, copy, nullable) NSString *identifier;
@@ -31,6 +35,12 @@
 
 @property (nonatomic, copy, nullable) NSString *downloadFilePath;
 
+@property (nonatomic, strong, nullable) NSMutableArray<PWNUploadFormData *> *uploadFormDatas;
+
 - (void)m_cleanCallbackBlocks;
 
 @end
+
+NSString *PWNStringForRequestType(PWNRequestType type);
+
+NS_ASSUME_NONNULL_END

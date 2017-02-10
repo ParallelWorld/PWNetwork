@@ -66,6 +66,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// 最终下载的地址
 @property (nonatomic, copy, nullable, readonly) NSString *downloadFilePath;
 
+- (void)addFormDataWithName:(NSString *)name fileData:(NSData *)fileData;
+- (void)addFormDataWithName:(NSString *)name fileName:(NSString *)fileName mimeType:(NSString *)mimeType fileData:(NSData *)fileData;
+- (void)addFormDataWithName:(NSString *)name fileURL:(NSURL *)fileURL;
+- (void)addFormDataWithName:(NSString *)name fileName:(NSString *)fileName mimeType:(NSString *)mimeType fileURL:(NSURL *)fileURL;
+
 #pragma mark - Call back
 
 /// success回调

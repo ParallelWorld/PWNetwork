@@ -18,13 +18,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:@"testImage" ofType:@"jpg"];
+    UIImage *image = [UIImage imageWithContentsOfFile:path];
+    
+    
     self.r = [PWNRequest new];
     
-    self.r.url = @"http://pic.qiantucdn.com/00/92/26/19bOOOPIC1d.jpg";
-    self.r.api = @"image/png";
-    self.r.requestType = PWNRequestDownload;
-//    self.r.downloadFileDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
-//    self.r.downloadFileName = @"test.png";
+    self.r.api = @"post";
+    self.r.requestType = PWNRequestUpload;
+    [self.r addFormDataWithName:@"image" fileName:@"testImage.jpg" mimeType:@"image/jpeg" fileURL:[NSURL fileURLWithPath:path]];
     
     [[[[self.r onSuccess:^(id  _Nullable responseObject) {
         

@@ -21,6 +21,8 @@
 		0EDB00501E49DFFE006F512F /* PWNLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EDB004F1E49DFFE006F512F /* PWNLogger.m */; };
 		0EDB005E1E4B3690006F512F /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 0EDB005D1E4B3690006F512F /* README.md */; };
 		0EDB00611E4B72F8006F512F /* PWNReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EDB00601E4B72F8006F512F /* PWNReachability.m */; };
+		0EDB006F1E4D9A1D006F512F /* PWNUploadFormData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EDB006E1E4D9A1D006F512F /* PWNUploadFormData.m */; };
+		0EDB00711E4D9FC4006F512F /* testImage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0EDB00701E4D9FC4006F512F /* testImage.jpg */; };
 		5C2657E4E15EE4A36A9EA3F8 /* libPods-PWNetworkDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F3639331274B7767492C41A6 /* libPods-PWNetworkDemo.a */; };
 		D67F4828C8CB657AFFEAB119 /* libPods-PWNetworkDemoTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 18CC2CF979DBF15D96BB77C5 /* libPods-PWNetworkDemoTests.a */; };
 /* End PBXBuildFile section */
@@ -67,6 +69,9 @@
 		0EDB005D1E4B3690006F512F /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		0EDB005F1E4B72F8006F512F /* PWNReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWNReachability.h; sourceTree = "<group>"; };
 		0EDB00601E4B72F8006F512F /* PWNReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PWNReachability.m; sourceTree = "<group>"; };
+		0EDB006D1E4D9A1D006F512F /* PWNUploadFormData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWNUploadFormData.h; sourceTree = "<group>"; };
+		0EDB006E1E4D9A1D006F512F /* PWNUploadFormData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PWNUploadFormData.m; sourceTree = "<group>"; };
+		0EDB00701E4D9FC4006F512F /* testImage.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = testImage.jpg; sourceTree = "<group>"; };
 		18CC2CF979DBF15D96BB77C5 /* libPods-PWNetworkDemoTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PWNetworkDemoTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		54283EFC430CEF3035A44CC5 /* Pods-PWNetworkDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PWNetworkDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-PWNetworkDemo/Pods-PWNetworkDemo.release.xcconfig"; sourceTree = "<group>"; };
 		61D7CFE647A823E3A35AF716 /* Pods-PWNetworkDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PWNetworkDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PWNetworkDemo/Pods-PWNetworkDemo.debug.xcconfig"; sourceTree = "<group>"; };
@@ -120,6 +125,7 @@
 		0E57B3C21E30909B00572389 /* PWNetworkDemo */ = {
 			isa = PBXGroup;
 			children = (
+				0EDB00701E4D9FC4006F512F /* testImage.jpg */,
 				0E57B3C61E30909B00572389 /* AppDelegate.h */,
 				0E57B3C71E30909B00572389 /* AppDelegate.m */,
 				0E57B3C91E30909B00572389 /* ViewController.h */,
@@ -170,6 +176,8 @@
 				0EDB004B1E49A967006F512F /* PWNRequest+Private.h */,
 				0EDB005F1E4B72F8006F512F /* PWNReachability.h */,
 				0EDB00601E4B72F8006F512F /* PWNReachability.m */,
+				0EDB006D1E4D9A1D006F512F /* PWNUploadFormData.h */,
+				0EDB006E1E4D9A1D006F512F /* PWNUploadFormData.m */,
 			);
 			path = PWNetwork;
 			sourceTree = "<group>";
@@ -286,6 +294,7 @@
 				0E57B3D31E30909B00572389 /* LaunchScreen.storyboard in Resources */,
 				0E57B3D01E30909B00572389 /* Assets.xcassets in Resources */,
 				0E57B3CE1E30909B00572389 /* Main.storyboard in Resources */,
+				0EDB00711E4D9FC4006F512F /* testImage.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -402,6 +411,7 @@
 				0E57B3C81E30909B00572389 /* AppDelegate.m in Sources */,
 				0E57B3C51E30909B00572389 /* main.m in Sources */,
 				0EDB00501E49DFFE006F512F /* PWNLogger.m in Sources */,
+				0EDB006F1E4D9A1D006F512F /* PWNUploadFormData.m in Sources */,
 				0EDB005E1E4B3690006F512F /* README.md in Sources */,
 				0E57B4101E30CFAC00572389 /* PWNRequest.m in Sources */,
 				0EDB00611E4B72F8006F512F /* PWNReachability.m in Sources */,
