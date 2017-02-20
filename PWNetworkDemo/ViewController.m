@@ -19,7 +19,6 @@
     [super viewDidLoad];
     
     NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:@"testImage" ofType:@"jpg"];
-    UIImage *image = [UIImage imageWithContentsOfFile:path];
     
     
     self.r = [PWNRequest new];
