@@ -9,9 +9,9 @@
 #import "PWNCenter.h"
 
 #import "PWNRequest.h"
-#import "PWNRequest+Private.h"
+#import "PWNRequestInternal.h"
 #import "PWNEngine.h"
-#import "PWNCenter+Private.h"
+#import "PWNCenterInternal.h"
 #import "PWNReachability.h"
 
 

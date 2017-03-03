@@ -10,8 +10,8 @@
 
 #import "AFNetworking.h"
 #import "PWNRequest.h"
-#import "PWNRequest+Private.h"
-#import "PWNEngine+Private.h"
+#import "PWNRequestInternal.h"
+#import "PWNEngineInternal.h"
 #import "AFNetworkActivityIndicatorManager.h"
 #import "PWNReachability.h"
 #import "PWNUploadFormData.h"

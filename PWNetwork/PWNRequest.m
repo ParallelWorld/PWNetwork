@@ -7,7 +7,7 @@
 //
 
 #import "PWNRequest.h"
-#import "PWNRequest+Private.h"
+#import "PWNRequestInternal.h"
 #import "PWNReachability.h"
 #import "PWNCenter.h"
 #import "PWNUploadFormData.h"

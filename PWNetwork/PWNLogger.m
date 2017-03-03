@@ -10,7 +10,7 @@
 #import "AFNetworking.h"
 #import "PWNEngine.h"
 #import "PWNRequest.h"
-#import "PWNRequest+Private.h"
+#import "PWNRequestInternal.h"
 
 #import <objc/runtime.h>
 
