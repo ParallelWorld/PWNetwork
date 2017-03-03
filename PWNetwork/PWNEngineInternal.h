@@ -8,7 +8,8 @@
 
 #import "PWNEngine.h"
 #import "PWNDefines.h"
-#import "AFNetworking.h"
+#import <AFNetworking/AFNetworking.h>
+
 
 @class PWNRequest;
 
