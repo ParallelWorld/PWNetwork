@@ -73,6 +73,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Call back
 
+@property (nonatomic, readonly) PWNSuccessBlock successBlock;
+
+@property (nonatomic, readonly) PWNFailureBlock failureBlock;
+
+@property (nonatomic, readonly) PWNProgressBlock progressBlock;
+
+@property (nonatomic, readonly) PWNCompletionBlock completionBlock;
+
 /// success回调
 - (PWNRequest *)onSuccess:(nullable PWNSuccessBlock)block;
 
